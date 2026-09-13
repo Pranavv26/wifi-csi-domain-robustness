@@ -1,76 +1,49 @@
-# Robust Wi-Fi CSI-Based Human Activity Recognition Under Cross-Environment and Low-SNR Conditions
+# Cross-Domain Wi-Fi CSI-Based Human Activity Recognition via Domain-Adversarial Test-Time Adaptation
 
-This project investigates the robustness of Wi-Fi Channel State Information (CSI)-based Human Activity Recognition (HAR) when the wireless sensing conditions change.
+This project investigates the robustness of Wi-Fi Channel State Information (CSI)-based Human Activity Recognition (HAR) when the sensing **domain** changes — a different room, a different user, or different hardware.
 
-Rather than focusing only on overall classification accuracy, we study how changes in the **indoor environment** and **signal quality (SNR)** affect model performance and whether a lightweight preprocessing/normalization approach can reduce the resulting performance degradation.
+Rather than focusing only on overall classification accuracy, we study how a model trained in one setting **generalizes to previously unseen domains**. Because CSI encodes the surrounding multipath channel (room geometry, furniture, line-of-sight state, device) as strongly as it encodes the activity itself, conventional HAR models tend to learn environment-specific channel signatures and degrade sharply once the domain shifts. This is fundamentally a wireless-communications problem, rooted in multipath propagation and channel variability.
 
-## Problem
+## Approach
 
-Wi-Fi CSI contains information about how wireless signals are affected by objects and human movement in the environment. This makes CSI useful for sensing human activities without requiring cameras or wearable sensors.
+Our project adopts **DATTA — Domain-Adversarial Test-Time Adaptation** (Strohmayer et al., WACV 2026) as its technical foundation, and is scoped as a **faithful reproduction, controlled evaluation, and component-wise analysis** of that framework rather than a new algorithm. DATTA combines:
 
-However, a model trained under one set of wireless conditions may not perform equally well when the conditions change.
+- **Domain-adversarial training (DAT)** — a Gradient Reversal Layer trains a feature extractor so a domain discriminator cannot distinguish domains, yielding domain-invariant features.
+- **Test-time adaptation (TTA)** — the model adapts to the unlabeled incoming stream at inference, correcting residual domain shift.
+- **Random weight resetting** — periodically restores a random subset of adapted weights to their source values to prevent catastrophic forgetting.
+- **A lightweight WiFlexFormer backbone** with CSI-specific augmentation, enabling real-time inference.
 
-In particular:
+We reproduce each component in stages (baseline → augmentation → DAT → TTA → random resetting) and measure how much each contributes to cross-domain performance.
 
-- Changes in room layout and surroundings can alter the wireless propagation environment and multipath characteristics.
-- Lower signal-to-noise ratio (SNR) can make CSI measurements more difficult to interpret.
-- A model that performs well under standard train/test conditions may therefore experience a significant performance drop under previously unseen conditions.
+## Primary Dataset — Widar3.0-G6D
 
-This project aims to **quantify these generalization gaps and investigate a lightweight method for improving robustness**.
+We use **Widar3.0-G6D**, the 6-gesture subset of Widar3.0 used in the DATTA paper (16 participants, 3 indoor environments; Intel WiFi Link 5300, 5 GHz, 3 antennas × 30 subcarriers). A *domain* is a room–participant combination, and the data is split by domain so that test domains are unseen during training. The dataset is not stored in this repository (tens of GB); acquisition and preparation steps are documented in `Code/DATASET.md`.
 
-## Research Question
+## Repository Structure
 
-> How does cross-environment variation and reduced SNR affect Wi-Fi CSI-based human activity recognition, and can lightweight feature normalization recover part of the resulting performance loss without full model retraining?
+```
+M1_g7_aialgorithm_wifisensing/
+├── README.md
+├── Report/     M1 technical report (PDF)
+├── Video/      M1 video walkthrough link
+└── Code/       DATASET.md (Widar3.0-G6D acquisition) + M2 implementation plan
+```
 
-## Objectives
+## Timeline
 
-The project will:
+- **M1 (13 Sep)** — Problem definition, literature review, SOTA positioning, dataset and protocol scoping (this milestone).
+- **M2 (11 Oct)** — Prepare Widar3.0-G6D; reproduce the WiFlexFormer baseline; construct the domain-based Train / Val / Val_TTA / Test split; measure the cross-domain gap.
+- **M3 (1 Nov)** — Add augmentation, DAT, TTA, and random resetting; run the component-wise ablation against the DAT and ViTTA baselines.
+- **M4 (22 Nov)** — Full evaluation, robustness–complexity analysis, final report, video, and demo.
 
-1. Develop a reproducible Wi-Fi CSI-based Human Activity Recognition pipeline.
-2. Establish traditional ML and neural-network baselines.
-3. Evaluate model performance under standard and unseen-environment conditions.
-4. Study the effect of controlled SNR degradation on recognition performance.
-5. Investigate a lightweight normalization/preprocessing approach for improving robustness.
-6. Benchmark models using both sensing performance and model complexity.
-7. Analyze failure cases and the conditions under which models generalize or fail.
+## Team — Group 7
 
-## Dataset
+- Pranav Jain (AU2420166) — Anchor; WiFlexFormer / DAT + TTA implementation; SOTA positioning
+- Paarth Jawaharani (AU2420056) — Data pipeline; Widar3.0-G6D preparation; baseline reproduction; split construction
+- Kritika Lunkad (AU2320067) — Evaluation and ablations; benchmark tables and plots; reproducibility and report
 
-We plan to use the **CSI-Bench** Wi-Fi sensing benchmark dataset.
+Course: ECE 310 — Wireless Communications (Monsoon 2026) · Category: AI Algorithms + Existing Dataset · Instructor: Prof. Dhaval Patel
 
-The dataset and its experimental protocols will be documented in detail as the project progresses, including:
+## Reference
 
-- Dataset source
-- Sensing task and activity classes
-- Number of samples
-- CSI representation
-- Train/validation/test splits
-- Environment information
-- User information
-- Device information
-- Experimental conditions
-
-> Dataset configuration and final experimental splits will be documented after the initial dataset analysis.
-
-## Planned Methodology
-
-The planned experimental pipeline is:
-
-```text
-Wi-Fi CSI Dataset
-       ↓
-Data Preprocessing
-       ↓
-CSI Representation
-       ↓
-Traditional ML Baseline
-       ↓
-Neural Network Baseline
-       ↓
-Cross-Environment Evaluation
-       ↓
-Controlled SNR Robustness Evaluation
-       ↓
-Lightweight Normalization
-       ↓
-Benchmark + Ablation Analysis
+J. Strohmayer, R. Sterzinger, M. Wödlinger, M. Kampel, "DATTA: Domain-Adversarial Test-Time Adaptation for Cross-Domain WiFi-Based Human Activity Recognition," WACV 2026. Code: https://github.com/StrohmayerJ/DATTA · Widar3.0: https://tns.thss.tsinghua.edu.cn/widar3.0/
