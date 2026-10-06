@@ -1,0 +1,27 @@
+Total files to process: 90751
+Activity: 1 Number of samples: 5199
+Activity: 2 Number of samples: 3599
+Activity: 3 Number of samples: 2245
+Activity: 4 Number of samples: 4478
+Activity: 5 Number of samples: 4467
+Activity: 6 Number of samples: 4494
+Environment: 2 Number of samples: 8564
+Environment: 3 Number of samples: 15918
+User: 1 Number of samples: 3974
+User: 2 Number of samples: 747
+User: 3 Number of samples: 3909
+User: 6 Number of samples: 3843
+User: 7 Number of samples: 3915
+User: 8 Number of samples: 3859
+User: 9 Number of samples: 4235
+Domain: 9 Number of samples: 3974
+Domain: 10 Number of samples: 747
+Domain: 11 Number of samples: 3843
+Domain: 12 Number of samples: 3909
+Domain: 13 Number of samples: 3915
+Domain: 14 Number of samples: 3859
+Domain: 15 Number of samples: 4235
+TRAIN split number of samples: 24482, with a max length of 220
+Array shape: (24482, 30, 220) dtype: complex64 size: 1.29 GB
+Mean/Std/Median/Min/Max length: 170.7379299076873 23.264258846075588 171.0 120 220
+Saved: data/widar3g6d/widar3-g6_csi_domain_train_cache.pkl

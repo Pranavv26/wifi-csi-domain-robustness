@@ -1,0 +1,30 @@
+Total files to process: 90751
+Activity: 1 Number of samples: 6693
+Activity: 2 Number of samples: 4867
+Activity: 3 Number of samples: 4037
+Activity: 4 Number of samples: 6441
+Activity: 5 Number of samples: 5993
+Activity: 6 Number of samples: 6135
+Environment: 1 Number of samples: 34166
+User: 5 Number of samples: 3965
+User: 10 Number of samples: 3857
+User: 11 Number of samples: 4334
+User: 12 Number of samples: 3865
+User: 13 Number of samples: 4023
+User: 14 Number of samples: 3806
+User: 15 Number of samples: 4078
+User: 16 Number of samples: 3806
+User: 17 Number of samples: 2432
+Domain: 0 Number of samples: 3965
+Domain: 1 Number of samples: 3857
+Domain: 2 Number of samples: 4334
+Domain: 3 Number of samples: 3865
+Domain: 4 Number of samples: 4023
+Domain: 5 Number of samples: 3806
+Domain: 6 Number of samples: 4078
+Domain: 7 Number of samples: 3806
+Domain: 8 Number of samples: 2432
+TEST split number of samples: 34166, with a max length of 220
+Array shape: (34166, 30, 220) dtype: complex64 size: 1.80 GB
+Mean/Std/Median/Min/Max length: 174.31027922496048 23.93955180094525 176.0 120 220
+Saved: data/widar3g6d/widar3-g6_csi_domain_test_cache.pkl
