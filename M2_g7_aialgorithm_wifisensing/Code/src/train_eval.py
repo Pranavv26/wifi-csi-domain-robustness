@@ -1,26 +1,3 @@
-"""
-train_eval.py - M2 baseline reproduction for DATTA on Widar3.0-G6D.
-
-Run from the DATTA repo root (github.com/StrohmayerJ/DATTA). It reuses DATTA's
-own dataset class, augmentation, WiFlexFormer model and metric definitions.
-
-Configs
-  W      : WiFlexFormer, supervised cross-entropy on activity only
-  W+aug  : same, with DATTA's CSI augmentation (aug/default.yaml)
-  W_DAT  : WiFlexFormer + domain-adversarial training (GRL + domain head +
-           confidence constraint), i.e. DATTA's trainDAT.py loss
-
-Protocol (same as DATTA's trainDAT.py / testDAT.py)
-  Train/Val : TRAIN split (rooms 2,3), random 80/20 split, generator seed 42
-  Test      : TEST split (room 1), shuffled, 90% used for testing
-              (the other 10% is DATTA's Val_TTA split, kept aside)
-  Model     : checkpoint with the lowest validation loss
-  Metrics   : accuracy, macro precision, macro recall, F1 = 2PR/(P+R)
-
-Example
-  python3 train_eval.py --config W --epochs 50 --seeds 1 2 3 --out /content/drive/MyDrive/ECE310_M2/results
-"""
-
 import argparse
 import csv
 import json
@@ -62,7 +39,6 @@ def confusion(logits, target, n):
 
 
 def scores(cm):
-    # identical to DATTA utils/metrics.py (macro P/R, nan classes ignored)
     rec = cm.diag() / cm.sum(1)
     prec = cm.diag() / cm.sum(0)
     r = rec[~torch.isnan(rec)].mean().item()
@@ -135,7 +111,7 @@ def train_one(opt, seed, device, test_loader):
     set_seed(seed)
     aug = opt.augment if opt.config in ("W+aug", "W_DAT") else ""
     dataset = data.Widar3g6d(opt.data, augPath=aug, opt=opt, mode="TRAIN")
-    dataset.csiComplex = None  # only the amplitude features are used; frees RAM
+    dataset.csiComplex = None
     n_val = int(len(dataset) * 0.2)
     g = torch.Generator().manual_seed(42)
     ds_train, ds_val = random_split(dataset, [len(dataset) - n_val, n_val], generator=g)
@@ -155,7 +131,7 @@ def train_one(opt, seed, device, test_loader):
     best_path = os.path.join(run_dir, "best_val_loss.pt")
     log_path = os.path.join(run_dir, "log.csv")
     start_epoch, best_val, best_epoch = 0, float("inf"), -1
-    if os.path.exists(ckpt_path):  # resume after a Colab disconnect
+    if os.path.exists(ckpt_path):
         ck = torch.load(ckpt_path, map_location=device, weights_only=False)
         model.load_state_dict(ck["model"])
         optimizer.load_state_dict(ck["optimizer"])
@@ -171,7 +147,7 @@ def train_one(opt, seed, device, test_loader):
 
     for epoch in range(start_epoch, opt.epochs):
         t0 = time.time()
-        if opt.config == "W_DAT":  # same GRL schedule as trainDAT.py
+        if opt.config == "W_DAT":
             model.grl_lambda = (2.0 / (1.0 + np.exp(-10 * epoch / opt.epochs)) - 1) * opt.ld
         tr_loss, tr_s = run_epoch(model, dl_train, device, opt.config, opt.classes, optimizer, scheduler)
         va_loss, va_s = run_epoch(model, dl_val, device, opt.config, opt.classes)
