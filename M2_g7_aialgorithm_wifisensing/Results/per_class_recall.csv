@@ -1,0 +1,7 @@
+class,W_recall,W+aug_recall,change
+Push&Pull,30.2,37.5,7.2
+Sweep,58.5,71.7,13.2
+Clap,73.5,71.3,-2.2
+Slide,56.2,44.9,-11.3
+Draw-O,24.2,21.5,-2.7
+Draw-Zigzag,20.6,43.0,22.3

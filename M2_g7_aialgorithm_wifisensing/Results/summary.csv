@@ -1,0 +1,3 @@
+config,paper_f1,ours_f1_mean,ours_f1_std,diff_f1,acc_mean,acc_std,precision_mean,recall_mean,ms_per_sample,seeds,epochs
+W,40.62,44.6,0.62,3.98,41.47,0.22,45.36,43.87,0.261,"1,2,3",30
+W+aug,49.32,48.53,0.28,-0.79,45.93,0.29,48.76,48.3,0.255,"1,2,3",30
