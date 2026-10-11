@@ -1,0 +1,14 @@
+{
+  "train_cache": "C:\\Users\\Khushi Jain\\Desktop\\Dataset Wider\\widar3-g6_csi_domain_train_cache.pkl",
+  "test_cache": "C:\\Users\\Khushi Jain\\Desktop\\Dataset Wider\\widar3-g6_csi_domain_test_cache.pkl",
+  "output_dir": "outputs\\wiflexformer_widar_baseline",
+  "epochs": 15,
+  "batch_size": 8,
+  "num_workers": 0,
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "val_fraction": 0.2,
+  "seed": 42,
+  "cpu_threads": 0,
+  "sanity_check": false
+}

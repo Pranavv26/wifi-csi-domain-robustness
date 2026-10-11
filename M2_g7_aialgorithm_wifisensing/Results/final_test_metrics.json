@@ -1,0 +1,6 @@
+{
+  "checkpoint": "outputs\\wiflexformer_widar_baseline\\best_validation_macro_f1.pt",
+  "best_validation_macro_f1": 0.48813619327634467,
+  "final_test_accuracy": 0.4334133348943394,
+  "final_test_macro_f1": 0.4596450227865277
+}
