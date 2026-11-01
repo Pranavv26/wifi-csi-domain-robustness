@@ -14,8 +14,6 @@ The held-out data is split into Val_TTA (3,417 samples, used only to tune test-t
 - **`make_report_assets.py`**: generates the report tables and figures from the result files.
 - **`aug/default.yaml`**: augmentation settings.
 
-DAT, the confidence-control loss, TTA and random weight resetting are from the authors' implementation (https://github.com/StrohmayerJ/DATTA).
-
 ## Requirements
 
 - Python
